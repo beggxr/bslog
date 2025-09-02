@@ -55,11 +55,26 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 ## Authentication Setup
 
-Better Stack uses two different authentication systems:
+Better Stack uses two different authentication systems, and **both are required** for full functionality:
+
+### Why Two Authentication Systems?
+
+Better Stack separates authentication for security and access control:
+
+- **Telemetry API Token**: Manages sources and metadata (read-only access to source configuration)
+- **Query API Credentials**: Provides access to actual log data (sensitive information)
+
+This separation allows teams to grant different access levels - for example, someone might be able to list sources but not read the actual logs.
 
 ### 1. Telemetry API Token (Required)
 
-Used for listing sources and managing logs:
+**What it's used for:**
+- Listing available log sources (`bslog sources list`)
+- Getting source metadata (team ID, table names)
+- Resolving source names to table identifiers
+- Required for ALL commands that reference sources by name
+
+**How to get it:**
 
 1. Log into [Better Stack](https://betterstack.com)
 2. Navigate to **Settings > API Tokens**
@@ -72,7 +87,12 @@ export BETTERSTACK_API_TOKEN="your_telemetry_token_here"
 
 ### 2. Query API Credentials (Required for querying logs)
 
-Used for actually querying and reading log data:
+**What it's used for:**
+- Actually reading log data (`bslog tail`, `bslog errors`, etc.)
+- Executing SQL queries against log tables
+- Any command that retrieves log content
+
+**How to get them:**
 
 1. Go to Better Stack > **Logs > Dashboards**
 2. Click **"Connect remotely"**
@@ -85,10 +105,37 @@ export BETTERSTACK_QUERY_USERNAME="your_username_here"
 export BETTERSTACK_QUERY_PASSWORD="your_password_here"
 ```
 
-### 3. Reload Your Shell
+### 3. Complete Setup Example
+
+Add all three environment variables to your shell configuration:
+
+```bash
+# ~/.zshrc or ~/.bashrc
+
+# For source discovery and metadata
+export BETTERSTACK_API_TOKEN="your_telemetry_token_here"
+
+# For querying log data
+export BETTERSTACK_QUERY_USERNAME="your_username_here"
+export BETTERSTACK_QUERY_PASSWORD="your_password_here"
+```
+
+Then reload your shell:
 
 ```bash
 source ~/.zshrc  # or ~/.bashrc
+```
+
+### Verification
+
+Test that both authentication systems are working:
+
+```bash
+# Test Telemetry API (should list your sources)
+bslog sources list
+
+# Test Query API (should retrieve recent logs)
+bslog tail -n 5
 ```
 
 ## Quick Start
