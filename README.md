@@ -1,4 +1,4 @@
-# 📊 bslog - Better Stack Log CLI
+# bslog - Better Stack Log CLI
 
 [![npm version](https://img.shields.io/npm/v/@steipete/bslog.svg)](https://www.npmjs.com/package/@steipete/bslog)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,19 +6,19 @@
 
 A powerful, intuitive CLI tool for querying Better Stack logs with GraphQL-inspired syntax. Query your logs naturally without memorizing complex SQL or API endpoints.
 
-## ✨ Features
+## Features
 
-- **🎯 GraphQL-inspired query syntax** - Write queries that feel natural and are easy to remember
-- **📝 Simple commands** - Common operations like `tail`, `errors`, `search` work out of the box
-- **🔍 Smart filtering** - Filter by level, subsystem, time ranges, or any JSON field
-- **🎨 Beautiful output** - Color-coded, formatted logs that are easy to read
-- **📊 Multiple formats** - Export as JSON, CSV, or formatted tables
-- **⚡ Fast** - Built with Bun for maximum performance
-- **🔄 Real-time following** - Tail logs in real-time with `-f` flag
-- **💾 Query history** - Saves your queries for quick re-use
-- **🔧 Configurable** - Set defaults for source, output format, and more
+- **GraphQL-inspired query syntax** - Write queries that feel natural and are easy to remember
+- **Simple commands** - Common operations like `tail`, `errors`, `search` work out of the box
+- **Smart filtering** - Filter by level, subsystem, time ranges, or any JSON field
+- **Beautiful output** - Color-coded, formatted logs that are easy to read
+- **Multiple formats** - Export as JSON, CSV, or formatted tables
+- **Fast** - Built with Bun for maximum performance
+- **Real-time following** - Tail logs in real-time with `-f` flag
+- **Query history** - Saves your queries for quick re-use
+- **Configurable** - Set defaults for source, output format, and more
 
-## 📦 Installation
+## Installation
 
 ### Global Installation (Recommended)
 
@@ -53,12 +53,12 @@ curl -fsSL https://bun.sh/install | bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 ```
 
-## 🔑 Authentication Setup
+## Authentication Setup
 
 ### 1. Get Your API Token
 
 1. Log into [Better Stack](https://betterstack.com)
-2. Navigate to **Settings → API Tokens**
+2. Navigate to **Settings > API Tokens**
 3. Create or copy your **Telemetry API token**
 
 ### 2. Set Environment Variable
@@ -78,11 +78,11 @@ source ~/.zshrc  # or ~/.bashrc
 
 For actually querying logs, you'll need Query API credentials:
 
-1. Go to Better Stack → **Query API**
+1. Go to Better Stack > **Query API**
 2. Click **Create credentials**
 3. Save the username and password (feature for secure storage coming soon)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### First-Time Setup
 
@@ -122,7 +122,7 @@ bslog tail --since 1h
 bslog warnings --since 2d
 ```
 
-## 🎯 GraphQL-Inspired Query Syntax
+## GraphQL-Inspired Query Syntax
 
 The killer feature of bslog is its intuitive query language that feels like GraphQL:
 
@@ -174,7 +174,7 @@ bslog query "{ logs(search: 'database connection') { dt, message } }"
 - Specify individual fields: `dt, level, message, customField`
 - Access nested JSON fields directly
 
-## 📝 Command Reference
+## Command Reference
 
 ### Core Commands
 
@@ -315,7 +315,7 @@ Example:
   bslog config source my-app-staging
 ```
 
-## ⏰ Time Format Reference
+## Time Format Reference
 
 The `--since` and `--until` options support various time formats:
 
@@ -324,7 +324,7 @@ The `--since` and `--until` options support various time formats:
 - **Date only**: `2024-01-15`
 - **DateTime**: `2024-01-15 10:30:00`
 
-## 🎨 Output Formats
+## Output Formats
 
 Choose the output format that works best for your use case:
 
@@ -365,7 +365,7 @@ dt,level,message
 "2024-01-15 10:30:45.123","error","User authentication failed"
 ```
 
-## 🔧 Configuration File
+## Configuration File
 
 Configuration is stored in `~/.bslog/config.json`:
 
@@ -385,7 +385,7 @@ Configuration is stored in `~/.bslog/config.json`:
 }
 ```
 
-## 🔍 Advanced Usage
+## Advanced Usage
 
 ### Combining Filters
 
@@ -444,7 +444,7 @@ bslog errors --since 1d --format json | \
   jq -r '[.[] | {time: .dt, error: .message}]' > daily-errors.json
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "BETTERSTACK_API_TOKEN environment variable is not set"
 
@@ -475,7 +475,7 @@ If you're experiencing timeouts, try:
 - Using more specific time ranges with `--since` and `--until`
 - Checking your network connection
 
-## 🛠️ Development
+## Development
 
 ### Building from Source
 
@@ -504,7 +504,7 @@ bun run type-check
 bun run dev
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -514,34 +514,22 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with [Bun](https://bun.sh) for blazing fast performance
 - Powered by [Better Stack](https://betterstack.com) logging infrastructure
 - Inspired by GraphQL's intuitive query syntax
 
-## 📮 Support
+## Support
 
 - **Issues**: [GitHub Issues](https://github.com/steipete/bslog/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/steipete/bslog/discussions)
 - **Email**: steipete@gmail.com
 
-## 🗺️ Roadmap
-
-- [ ] Secure credential storage for Query API
-- [ ] Interactive mode with autocomplete
-- [ ] Query templates and saved searches
-- [ ] Log aggregations (COUNT, AVG, SUM)
-- [ ] Export to various formats (Excel, PDF)
-- [ ] Basic chart generation for log trends
-- [ ] Multi-source queries
-- [ ] Shell completions (bash, zsh, fish)
-- [ ] Web UI for query building
-
 ---
 
-Made with ❤️ by [steipete](https://github.com/steipete)
+Made by [steipete](https://github.com/steipete)
