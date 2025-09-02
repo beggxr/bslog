@@ -10640,6 +10640,33 @@ class BetterStackClient {
     });
     if (!response.ok) {
       const error = await response.text();
+      if (response.status === 400 && error.includes("Malformed token")) {
+        throw new Error(`Query API authentication failed: Malformed token
+
+` + `This usually means your Query API credentials are not set.
+
+` + `Current environment:
+` + `  BETTERSTACK_API_TOKEN: ${process.env.BETTERSTACK_API_TOKEN ? "✓ Set" : "✗ Not set"}
+` + `  BETTERSTACK_QUERY_USERNAME: ${process.env.BETTERSTACK_QUERY_USERNAME ? "✓ Set" : "✗ Not set"}
+` + `  BETTERSTACK_QUERY_PASSWORD: ${process.env.BETTERSTACK_QUERY_PASSWORD ? "✓ Set" : "✗ Not set"}
+
+` + `To fix this:
+` + `1. Add these to your ~/.zshrc or ~/.bashrc:
+` + `   export BETTERSTACK_QUERY_USERNAME="your_username"
+` + `   export BETTERSTACK_QUERY_PASSWORD="your_password"
+
+` + `2. Reload your shell:
+` + `   source ~/.zshrc
+
+` + `3. Or set them for this session:
+` + `   export BETTERSTACK_QUERY_USERNAME="your_username"
+` + `   export BETTERSTACK_QUERY_PASSWORD="your_password"
+
+` + `To get Query API credentials:
+` + `1. Go to Better Stack > Logs > Dashboards
+` + `2. Click "Connect remotely"
+` + `3. Create credentials and save them`);
+      }
       if (response.status === 403 || response.status === 401 || error.includes("Authentication failed")) {
         if (!username || !password) {
           throw new Error(`Query API authentication failed.
