@@ -20,6 +20,12 @@ export function parseTimeString(timeStr: string): Date {
         throw new Error(`Unknown time unit: ${unit}`)
     }
   }
+  
+  // Check if it matches the pattern but with invalid unit
+  if (/^\d+[a-z]$/i.test(timeStr)) {
+    const unit = timeStr.match(/[a-z]$/i)?.[0]
+    throw new Error(`Unknown time unit: ${unit}`)
+  }
 
   // Try to parse as ISO date or other standard formats
   const date = new Date(timeStr)

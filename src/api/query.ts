@@ -1,5 +1,5 @@
 import type { LogEntry, QueryOptions } from '../types'
-import { loadConfig } from '../utils/config'
+import { getQueryCredentials, loadConfig } from '../utils/config'
 import { parseTimeString, toClickHouseDateTime } from '../utils/time'
 import { BetterStackClient } from './client'
 import { SourcesAPI } from './sources'
@@ -29,8 +29,8 @@ export class QueryAPI {
       throw new Error(`Source not found: ${sourceName}`)
     }
 
-    // Build the SQL query
-    const tableName = `t${source.id}_${sourceName.replace(/-/g, '_')}_logs`
+    // Build the SQL query using team_id and table_name from the source
+    const tableName = `t${source.attributes.team_id}_${source.attributes.table_name}_logs`
     const fields =
       options.fields && options.fields.length > 0
         ? this.buildFieldSelection(options.fields)
@@ -104,7 +104,9 @@ export class QueryAPI {
   async execute(options: QueryOptions): Promise<LogEntry[]> {
     const sql = await this.buildQuery(options)
     console.error(`Executing query: ${sql}`) // Debug output to stderr
-    return this.client.query(sql)
+    
+    const { username, password } = getQueryCredentials()
+    return this.client.query(sql, username, password)
   }
 
   async executeSql(sql: string): Promise<any[]> {
@@ -113,6 +115,7 @@ export class QueryAPI {
       sql += ' FORMAT JSONEachRow'
     }
 
-    return this.client.query(sql)
+    const { username, password } = getQueryCredentials()
+    return this.client.query(sql, username, password)
   }
 }

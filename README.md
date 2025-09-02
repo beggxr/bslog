@@ -55,32 +55,41 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 ## Authentication Setup
 
-### 1. Get Your API Token
+Better Stack uses two different authentication systems:
+
+### 1. Telemetry API Token (Required)
+
+Used for listing sources and managing logs:
 
 1. Log into [Better Stack](https://betterstack.com)
 2. Navigate to **Settings > API Tokens**
 3. Create or copy your **Telemetry API token**
-
-### 2. Set Environment Variable
-
-Add to your shell configuration (`~/.zshrc`, `~/.bashrc`, etc.):
+4. Add to your shell configuration (`~/.zshrc`, `~/.bashrc`, etc.):
 
 ```bash
-export BETTERSTACK_API_TOKEN="your_token_here"
+export BETTERSTACK_API_TOKEN="your_telemetry_token_here"
 ```
 
-Then reload your shell:
+### 2. Query API Credentials (Required for querying logs)
+
+Used for actually querying and reading log data:
+
+1. Go to Better Stack > **Logs > Dashboards**
+2. Click **"Connect remotely"**
+3. Click **"Create credentials"**
+4. **Important**: Copy the password immediately (it won't be shown again)
+5. Add to your shell configuration:
+
+```bash
+export BETTERSTACK_QUERY_USERNAME="your_username_here"
+export BETTERSTACK_QUERY_PASSWORD="your_password_here"
+```
+
+### 3. Reload Your Shell
+
 ```bash
 source ~/.zshrc  # or ~/.bashrc
 ```
-
-### 3. Query API Credentials (For Log Queries)
-
-For actually querying logs, you'll need Query API credentials:
-
-1. Go to Better Stack > **Query API**
-2. Click **Create credentials**
-3. Save the username and password (feature for secure storage coming soon)
 
 ## Quick Start
 
@@ -489,8 +498,26 @@ bun run build
 ### Running Tests
 
 ```bash
+# Run all tests
 bun test
+
+# Run unit tests only  
+bun test:unit
+
+# Run integration tests only
+bun test:integration
+
+# Watch mode for development
+bun test:watch
+
+# With coverage report
+bun test:coverage
 ```
+
+The test suite includes:
+- **Unit tests** for utilities, parsers, and formatters
+- **Integration tests** for query building and API interactions
+- **70+ test cases** ensuring reliability
 
 ### Type Checking
 

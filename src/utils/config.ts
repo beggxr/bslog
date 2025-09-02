@@ -18,6 +18,13 @@ export function getApiToken(): string {
   return token
 }
 
+export function getQueryCredentials(): { username?: string; password?: string } {
+  const username = process.env.BETTERSTACK_QUERY_USERNAME
+  const password = process.env.BETTERSTACK_QUERY_PASSWORD
+  
+  return { username, password }
+}
+
 export function loadConfig(): Config {
   if (!existsSync(CONFIG_FILE)) {
     return {

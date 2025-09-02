@@ -5,6 +5,8 @@ export interface Source {
     name: string
     platform: string
     token: string
+    team_id: number
+    table_name: string
     created_at: string
     updated_at: string
     ingesting_paused: boolean
