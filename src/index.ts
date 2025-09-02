@@ -2,14 +2,32 @@
 
 import chalk from 'chalk'
 import { Command } from 'commander'
-import dotenv from 'dotenv'
 import { setConfig, showConfig } from './commands/config'
 import { runQuery, runSql } from './commands/query'
 import { getSource, listSources } from './commands/sources'
 import { searchLogs, showErrors, showWarnings, tailLogs } from './commands/tail'
 
-// Load environment variables
-dotenv.config()
+// Try to load .env file if it exists (for local development)
+// But don't use dotenv package to avoid debug messages
+try {
+  const fs = require('node:fs')
+  const path = require('node:path')
+  const envPath = path.resolve(process.cwd(), '.env')
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8')
+    envContent.split('\n').forEach((line: string) => {
+      const [key, ...valueParts] = line.split('=')
+      if (key && valueParts.length > 0) {
+        const value = valueParts.join('=').trim()
+        if (!process.env[key.trim()]) {
+          process.env[key.trim()] = value.replace(/^["']|["']$/g, '')
+        }
+      }
+    })
+  }
+} catch {
+  // Ignore errors, environment variables might be set elsewhere
+}
 
 const program = new Command()
 

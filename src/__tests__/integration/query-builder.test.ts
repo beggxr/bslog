@@ -11,7 +11,9 @@ mock.module('../../api/sources', () => ({
           id: '123456',
           attributes: {
             name: 'test-source',
-            platform: 'javascript'
+            platform: 'javascript',
+            team_id: 123456,
+            table_name: 'test_source'
           }
         };
       }
@@ -28,6 +30,7 @@ mock.module('../../utils/config', () => ({
     outputFormat: 'json'
   }),
   getApiToken: () => 'test-token',
+  getQueryCredentials: () => ({ username: 'test-user', password: 'test-pass' }),
   saveConfig: () => {},
   updateConfig: () => {},
   addToHistory: () => {}
