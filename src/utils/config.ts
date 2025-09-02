@@ -73,3 +73,24 @@ export function addToHistory(query: string): void {
 
   updateConfig({ queryHistory: history })
 }
+
+// Common source aliases for convenience
+const SOURCE_ALIASES: Record<string, string> = {
+  'dev': 'sweetistics-dev',
+  'development': 'sweetistics-dev',
+  'prod': 'sweetistics',
+  'production': 'sweetistics',
+  'staging': 'sweetistics-staging',
+  'test': 'sweetistics-test',
+}
+
+export function resolveSourceAlias(source: string | undefined): string | undefined {
+  if (!source) return undefined
+  
+  // Check if it's an alias
+  const aliased = SOURCE_ALIASES[source.toLowerCase()]
+  if (aliased) return aliased
+  
+  // Return as-is if not an alias
+  return source
+}

@@ -9315,6 +9315,22 @@ function addToHistory(query) {
   }
   updateConfig({ queryHistory: history });
 }
+var SOURCE_ALIASES = {
+  dev: "sweetistics-dev",
+  development: "sweetistics-dev",
+  prod: "sweetistics-2",
+  production: "sweetistics-2",
+  staging: "sweetistics-staging",
+  test: "sweetistics-test"
+};
+function resolveSourceAlias(source) {
+  if (!source)
+    return;
+  const aliased = SOURCE_ALIASES[source.toLowerCase()];
+  if (aliased)
+    return aliased;
+  return source;
+}
 
 // src/commands/config.ts
 function setConfig(key, value) {
@@ -11282,6 +11298,9 @@ function formatBytes(bytes) {
 // src/commands/tail.ts
 async function tailLogs(options) {
   const api = new QueryAPI;
+  if (options.source) {
+    options.source = resolveSourceAlias(options.source);
+  }
   if (!options.limit) {
     options.limit = 100;
   }
@@ -11370,27 +11389,43 @@ program2.command("query").argument("<query>", "GraphQL-like query string").optio
 program2.command("sql").argument("<sql>", "Raw ClickHouse SQL query").option("-f, --format <type>", "Output format (json|table|csv|pretty)", "json").description("Execute raw ClickHouse SQL query").action(async (sql, options) => {
   await runSql(sql, options);
 });
-program2.command("tail").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--subsystem <name>", "Filter by subsystem").option("--since <time>", "Show logs since (e.g., 1h, 2d, 2024-01-01)").option("-f, --follow", "Follow log output").option("--interval <ms>", "Polling interval in milliseconds", "2000").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description("Tail logs (similar to tail -f)").action(async (options) => {
+program2.command("tail [source]").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-l, --level <level>", "Filter by log level").option("--subsystem <name>", "Filter by subsystem").option("--since <time>", "Show logs since (e.g., 1h, 2d, 2024-01-01)").option("-f, --follow", "Follow log output").option("--interval <ms>", "Polling interval in milliseconds", "2000").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description(`Tail logs (similar to tail -f)
+Examples:
+  bslog tail                    # use default source
+  bslog tail sweetistics-dev    # use specific source
+  bslog tail prod -n 50         # tail production logs`).action(async (source, options) => {
   await tailLogs({
     ...options,
+    source: source || options.source,
     limit: Number.parseInt(options.limit, 10)
   });
 });
-program2.command("errors").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("--since <time>", "Show errors since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").description("Show only error logs").action(async (options) => {
+program2.command("errors [source]").option("-n, --limit <number>", "Number of logs to fetch", "100").option("--since <time>", "Show errors since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description(`Show only error logs
+Examples:
+  bslog errors                  # use default source
+  bslog errors sweetistics-dev  # errors from dev
+  bslog errors prod --since 1h  # recent prod errors`).action(async (source, options) => {
   await showErrors({
     ...options,
+    source: source || options.source,
     limit: Number.parseInt(options.limit, 10)
   });
 });
-program2.command("warnings").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("--since <time>", "Show warnings since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").description("Show only warning logs").action(async (options) => {
+program2.command("warnings [source]").option("-n, --limit <number>", "Number of logs to fetch", "100").option("--since <time>", "Show warnings since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description("Show only warning logs").action(async (source, options) => {
   await showWarnings({
     ...options,
+    source: source || options.source,
     limit: Number.parseInt(options.limit, 10)
   });
 });
-program2.command("search").argument("<pattern>", "Search pattern").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--since <time>", "Search logs since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description("Search logs for a pattern").action(async (pattern, options) => {
+program2.command("search <pattern> [source]").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-l, --level <level>", "Filter by log level").option("--since <time>", "Search logs since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description(`Search logs for a pattern
+Examples:
+  bslog search "error"                    # search in default source
+  bslog search "error" sweetistics-dev    # search in dev
+  bslog search "timeout" prod --since 1h  # search recent prod logs`).action(async (pattern, source, options) => {
   await searchLogs(pattern, {
     ...options,
+    source: source || options.source,
     limit: Number.parseInt(options.limit, 10)
   });
 });

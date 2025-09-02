@@ -1,6 +1,7 @@
 import chalk from 'chalk'
 import { QueryAPI } from '../api/query'
 import type { QueryOptions } from '../types'
+import { resolveSourceAlias } from '../utils/config'
 import { formatOutput } from '../utils/formatter'
 
 export async function tailLogs(
@@ -11,6 +12,11 @@ export async function tailLogs(
   },
 ): Promise<void> {
   const api = new QueryAPI()
+
+  // Resolve source alias (e.g., 'dev' -> 'sweetistics-dev')
+  if (options.source) {
+    options.source = resolveSourceAlias(options.source)
+  }
 
   // Set default limit if not specified
   if (!options.limit) {

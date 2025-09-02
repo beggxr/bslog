@@ -59,9 +59,8 @@ program
 
 // Tail command - stream logs
 program
-  .command('tail')
+  .command('tail [source]')
   .option('-n, --limit <number>', 'Number of logs to fetch', '100')
-  .option('-s, --source <name>', 'Source name')
   .option('-l, --level <level>', 'Filter by log level')
   .option('--subsystem <name>', 'Filter by subsystem')
   .option('--since <time>', 'Show logs since (e.g., 1h, 2d, 2024-01-01)')
@@ -69,58 +68,60 @@ program
   .option('--interval <ms>', 'Polling interval in milliseconds', '2000')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
   .option('-v, --verbose', 'Show SQL query and debug information')
-  .description('Tail logs (similar to tail -f)')
-  .action(async (options) => {
+  .description('Tail logs (similar to tail -f)\nExamples:\n  bslog tail                    # use default source\n  bslog tail sweetistics-dev    # use specific source\n  bslog tail prod -n 50         # tail production logs')
+  .action(async (source, options) => {
     await tailLogs({
       ...options,
+      source: source || options.source,
       limit: Number.parseInt(options.limit, 10),
     })
   })
 
 // Errors command - show only errors
 program
-  .command('errors')
+  .command('errors [source]')
   .option('-n, --limit <number>', 'Number of logs to fetch', '100')
-  .option('-s, --source <name>', 'Source name')
   .option('--since <time>', 'Show errors since (e.g., 1h, 2d)')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
-  .description('Show only error logs')
-  .action(async (options) => {
+  .option('-v, --verbose', 'Show SQL query and debug information')
+  .description('Show only error logs\nExamples:\n  bslog errors                  # use default source\n  bslog errors sweetistics-dev  # errors from dev\n  bslog errors prod --since 1h  # recent prod errors')
+  .action(async (source, options) => {
     await showErrors({
       ...options,
+      source: source || options.source,
       limit: Number.parseInt(options.limit, 10),
     })
   })
 
 // Warnings command - show only warnings
 program
-  .command('warnings')
+  .command('warnings [source]')
   .option('-n, --limit <number>', 'Number of logs to fetch', '100')
-  .option('-s, --source <name>', 'Source name')
   .option('--since <time>', 'Show warnings since (e.g., 1h, 2d)')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
+  .option('-v, --verbose', 'Show SQL query and debug information')
   .description('Show only warning logs')
-  .action(async (options) => {
+  .action(async (source, options) => {
     await showWarnings({
       ...options,
+      source: source || options.source,
       limit: Number.parseInt(options.limit, 10),
     })
   })
 
 // Search command - search logs
 program
-  .command('search')
-  .argument('<pattern>', 'Search pattern')
+  .command('search <pattern> [source]')
   .option('-n, --limit <number>', 'Number of logs to fetch', '100')
-  .option('-s, --source <name>', 'Source name')
   .option('-l, --level <level>', 'Filter by log level')
   .option('--since <time>', 'Search logs since (e.g., 1h, 2d)')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
   .option('-v, --verbose', 'Show SQL query and debug information')
-  .description('Search logs for a pattern')
-  .action(async (pattern, options) => {
+  .description('Search logs for a pattern\nExamples:\n  bslog search "error"                    # search in default source\n  bslog search "error" sweetistics-dev    # search in dev\n  bslog search "timeout" prod --since 1h  # search recent prod logs')
+  .action(async (pattern, source, options) => {
     await searchLogs(pattern, {
       ...options,
+      source: source || options.source,
       limit: Number.parseInt(options.limit, 10),
     })
   })
