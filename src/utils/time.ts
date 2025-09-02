@@ -1,0 +1,47 @@
+export function parseTimeString(timeStr: string): Date {
+  const now = new Date()
+
+  // Check for relative time formats (1h, 30m, 2d, etc.)
+  const relativeMatch = timeStr.match(/^(\d+)([hdmw])$/)
+  if (relativeMatch) {
+    const [, amount, unit] = relativeMatch
+    const value = Number.parseInt(amount, 10)
+
+    switch (unit) {
+      case 'h': // hours
+        return new Date(now.getTime() - value * 60 * 60 * 1000)
+      case 'd': // days
+        return new Date(now.getTime() - value * 24 * 60 * 60 * 1000)
+      case 'm': // minutes
+        return new Date(now.getTime() - value * 60 * 1000)
+      case 'w': // weeks
+        return new Date(now.getTime() - value * 7 * 24 * 60 * 60 * 1000)
+      default:
+        throw new Error(`Unknown time unit: ${unit}`)
+    }
+  }
+
+  // Try to parse as ISO date or other standard formats
+  const date = new Date(timeStr)
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid time format: ${timeStr}`)
+  }
+
+  return date
+}
+
+export function formatDateTime(date: Date): string {
+  return date.toISOString().replace('T', ' ').replace('Z', '')
+}
+
+export function toClickHouseDateTime(date: Date): string {
+  // ClickHouse expects format: YYYY-MM-DD HH:MM:SS
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}

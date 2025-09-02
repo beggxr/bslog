@@ -1,0 +1,64 @@
+{
+  "name": "@steipete/bslog",
+  "version": "1.0.0",
+  "description": "Better Stack log query CLI with GraphQL-inspired syntax",
+  "author": "steipete",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build ./src/index.ts --compile --outfile dist/bslog",
+    "build:npm": "bun build ./src/index.ts --target node --outfile dist/index.js && chmod +x dist/index.js",
+    "postinstall": "node scripts/postinstall.js || true",
+    "test": "bun test",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "bun run build:npm",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.5",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.2",
+    "@types/bun": "^1.1.18",
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3"
+  },
+  "bin": {
+    "bslog": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "scripts/",
+    "README.md"
+  ],
+  "keywords": [
+    "betterstack",
+    "logs",
+    "cli",
+    "logging",
+    "graphql",
+    "query"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steipete/bslog.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "bugs": {
+    "url": "https://github.com/steipete/bslog/issues"
+  },
+  "homepage": "https://github.com/steipete/bslog#readme"
+}
