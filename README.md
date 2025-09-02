@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@steipete/bslog.svg)](https://www.npmjs.com/package/@steipete/bslog)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/@steipete/bslog.svg)](https://nodejs.org)
+[![Bun Version](https://img.shields.io/badge/bun-%3E%3D1.0.0-000000.svg?style=flat&logo=bun)](https://bun.sh)
 
 A powerful, intuitive CLI tool for querying Better Stack logs with GraphQL-inspired syntax. Query your logs naturally without memorizing complex SQL or API endpoints.
 
@@ -23,6 +23,10 @@ A powerful, intuitive CLI tool for querying Better Stack logs with GraphQL-inspi
 ### Global Installation (Recommended)
 
 ```bash
+# Using pnpm (recommended)
+pnpm add -g @steipete/bslog
+
+# Or using npm
 npm install -g @steipete/bslog
 ```
 
@@ -31,9 +35,22 @@ npm install -g @steipete/bslog
 ```bash
 git clone https://github.com/steipete/bslog.git
 cd bslog
-bun install
-bun run build
-npm link
+pnpm install  # Uses pnpm as package manager
+bun run build # Uses Bun for building and running
+pnpm link -g  # Link globally for testing
+```
+
+### Prerequisites
+
+- **[Bun](https://bun.sh)** >= 1.0.0 - JavaScript runtime and bundler
+- **[pnpm](https://pnpm.io)** >= 10.0.0 - Fast, disk space efficient package manager
+
+```bash
+# Install Bun
+curl -fsSL https://bun.sh/install | bash
+
+# Install pnpm
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 ```
 
 ## 🔑 Authentication Setup
