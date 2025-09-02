@@ -103,7 +103,11 @@ export class QueryAPI {
 
   async execute(options: QueryOptions): Promise<LogEntry[]> {
     const sql = await this.buildQuery(options)
-    console.error(`Executing query: ${sql}`) // Debug output to stderr
+    
+    // Only show SQL query in verbose mode
+    if (options.verbose) {
+      console.error(`Executing query: ${sql}`)
+    }
     
     const { username, password } = getQueryCredentials()
     return this.client.query(sql, username, password)

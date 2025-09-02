@@ -221,11 +221,28 @@ function extractSubsystem(entry: any): string | null {
 }
 
 function getExtraFields(entry: any): Record<string, any> {
-  const exclude = ['dt', 'raw', 'level', 'message', 'subsystem']
+  const exclude = ['dt', 'raw', 'level', 'message', 'subsystem', 'time', 'severity']
   const extras: Record<string, any> = {}
 
+  // First, check if raw contains parsed JSON data
+  if (entry.raw) {
+    try {
+      const parsed = typeof entry.raw === 'string' ? JSON.parse(entry.raw) : entry.raw
+      // Extract all fields from parsed raw data
+      for (const [key, value] of Object.entries(parsed)) {
+        if (!exclude.includes(key)) {
+          extras[key] = value
+        }
+      }
+    } catch {
+      // If raw is not JSON, include it as is
+      extras.raw = entry.raw
+    }
+  }
+
+  // Then add any other top-level fields
   for (const [key, value] of Object.entries(entry)) {
-    if (!exclude.includes(key)) {
+    if (!exclude.includes(key) && key !== 'raw') {
       extras[key] = value
     }
   }

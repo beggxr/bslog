@@ -68,6 +68,7 @@ program
   .option('-f, --follow', 'Follow log output')
   .option('--interval <ms>', 'Polling interval in milliseconds', '2000')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
+  .option('-v, --verbose', 'Show SQL query and debug information')
   .description('Tail logs (similar to tail -f)')
   .action(async (options) => {
     await tailLogs({
@@ -115,6 +116,7 @@ program
   .option('-l, --level <level>', 'Filter by log level')
   .option('--since <time>', 'Search logs since (e.g., 1h, 2d)')
   .option('--format <type>', 'Output format (json|table|csv|pretty)', 'pretty')
+  .option('-v, --verbose', 'Show SQL query and debug information')
   .description('Search logs for a pattern')
   .action(async (pattern, options) => {
     await searchLogs(pattern, {

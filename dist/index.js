@@ -10811,7 +10811,9 @@ class QueryAPI {
   }
   async execute(options) {
     const sql = await this.buildQuery(options);
-    console.error(`Executing query: ${sql}`);
+    if (options.verbose) {
+      console.error(`Executing query: ${sql}`);
+    }
     const { username, password } = getQueryCredentials();
     return this.client.query(sql, username, password);
   }
@@ -11136,10 +11138,22 @@ function extractSubsystem(entry) {
   return null;
 }
 function getExtraFields(entry) {
-  const exclude = ["dt", "raw", "level", "message", "subsystem"];
+  const exclude = ["dt", "raw", "level", "message", "subsystem", "time", "severity"];
   const extras = {};
+  if (entry.raw) {
+    try {
+      const parsed = typeof entry.raw === "string" ? JSON.parse(entry.raw) : entry.raw;
+      for (const [key, value] of Object.entries(parsed)) {
+        if (!exclude.includes(key)) {
+          extras[key] = value;
+        }
+      }
+    } catch {
+      extras.raw = entry.raw;
+    }
+  }
   for (const [key, value] of Object.entries(entry)) {
-    if (!exclude.includes(key)) {
+    if (!exclude.includes(key) && key !== "raw") {
       extras[key] = value;
     }
   }
@@ -11356,7 +11370,7 @@ program2.command("query").argument("<query>", "GraphQL-like query string").optio
 program2.command("sql").argument("<sql>", "Raw ClickHouse SQL query").option("-f, --format <type>", "Output format (json|table|csv|pretty)", "json").description("Execute raw ClickHouse SQL query").action(async (sql, options) => {
   await runSql(sql, options);
 });
-program2.command("tail").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--subsystem <name>", "Filter by subsystem").option("--since <time>", "Show logs since (e.g., 1h, 2d, 2024-01-01)").option("-f, --follow", "Follow log output").option("--interval <ms>", "Polling interval in milliseconds", "2000").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").description("Tail logs (similar to tail -f)").action(async (options) => {
+program2.command("tail").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--subsystem <name>", "Filter by subsystem").option("--since <time>", "Show logs since (e.g., 1h, 2d, 2024-01-01)").option("-f, --follow", "Follow log output").option("--interval <ms>", "Polling interval in milliseconds", "2000").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description("Tail logs (similar to tail -f)").action(async (options) => {
   await tailLogs({
     ...options,
     limit: Number.parseInt(options.limit, 10)
@@ -11374,7 +11388,7 @@ program2.command("warnings").option("-n, --limit <number>", "Number of logs to f
     limit: Number.parseInt(options.limit, 10)
   });
 });
-program2.command("search").argument("<pattern>", "Search pattern").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--since <time>", "Search logs since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").description("Search logs for a pattern").action(async (pattern, options) => {
+program2.command("search").argument("<pattern>", "Search pattern").option("-n, --limit <number>", "Number of logs to fetch", "100").option("-s, --source <name>", "Source name").option("-l, --level <level>", "Filter by log level").option("--since <time>", "Search logs since (e.g., 1h, 2d)").option("--format <type>", "Output format (json|table|csv|pretty)", "pretty").option("-v, --verbose", "Show SQL query and debug information").description("Search logs for a pattern").action(async (pattern, options) => {
   await searchLogs(pattern, {
     ...options,
     limit: Number.parseInt(options.limit, 10)
